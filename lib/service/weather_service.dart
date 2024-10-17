@@ -23,33 +23,33 @@ class WeatherService {
   }
 
   Future<String> getCurrentCity() async {
-  // Verificar e solicitar permissão para acessar a localização
+
   LocationPermission permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission != LocationPermission.whileInUse && permission != LocationPermission.always) {
-      return 'Permissão de localização negada'; // Retorna se a permissão for negada
+      return 'Permissão de localização negada'; 
     }
   }
 
   try {
-    // Obter a posição atual do usuário
+    
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    print('Coordenadas: Latitude ${position.latitude}, Longitude ${position.longitude}'); // Imprime as coordenadas
+    print('Coordenadas: Latitude ${position.latitude}, Longitude ${position.longitude}'); 
 
-    // Usar a API de geocodificação para obter o nome da cidade
+    
     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
 
     if (placemarks.isNotEmpty) {
-      // Tente obter a cidade ou um dos outros nomes se a cidade estiver vazia
+      
       String? city = placemarks[0].locality ?? placemarks[0].administrativeArea ?? placemarks[0].subAdministrativeArea;
-      print('Cidade encontrada: $city'); // Imprime a cidade encontrada
-      return city ?? "Cidade não encontrada"; // Retorna a cidade ou uma mensagem
+      print('Cidade encontrada: $city'); 
+      return city ?? "Cidade não encontrada"; 
     } else {
-      return "Cidade não encontrada"; // Se a lista de placemarks estiver vazia
+      return "Cidade não encontrada"; 
     }
   } catch (e) {
-    print('Erro ao obter a cidade: $e'); // Captura e imprime qualquer erro
+    print('Erro ao obter a cidade: $e'); 
     return "Erro ao obter a cidade";
   }
 }

@@ -13,7 +13,7 @@ class WeatherPage extends StatefulWidget {
 
 class _WeatherPageState extends State<WeatherPage> {
 
-  final _weatherService = WeatherService(apiKey: '1166f8029099d6af11a96ed832e610c1');
+  final _weatherService = WeatherService(apiKey: 'YOUR_API_KEY');
   Weather? _weather;
 
   _fetchWeather() async {
@@ -27,8 +27,29 @@ class _WeatherPageState extends State<WeatherPage> {
     } catch (e) {
       print(e);
     }
- 
   }
+
+  String getWeatherAnimation(String? mainCondition){
+    if (mainCondition == null) return 'assets/sol.json';
+
+    switch (mainCondition.toLowerCase()){
+      case 'thunderstorm':
+        return 'assets/tempestade.json';
+      case 'clear':
+        return 'assets/sol.json';
+      case 'clouds':
+        return 'assets/nublado.json';
+      case 'smoke':
+        return 'assets/nublado.json';
+      case ' rain':
+        return 'assets/sol-chuva.json';
+      case 'fog':
+        return 'assets/nublado.json';
+      default:
+        return 'assets/sol.json';
+    }
+  }
+
 
   @override
   void initState() {
@@ -44,13 +65,18 @@ class _WeatherPageState extends State<WeatherPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
+            // REMOVE THIS TEXT BELOW, BECAUSE IT'S A STATIC TEXT FOR UI
             Text('São Paulo, SP - Brasil'),
+
+          // USE THIS COMMENT BELOW
           // Text(_weather?.cityName ?? 'carregando cidade...'),
 
-          Lottie.asset('assets/nublado.json', width: 100, height: 100),
+          Lottie.asset(getWeatherAnimation(_weather?.mainCondition),),
 
+          // REMOVE THIS TEXT BELOW, BECAUSE IT'S A STATIC TEXT FOR UI
           Text('24ºC')
 
+          // USE THIS COMMENT BELOW
           // Text('${_weather?.temperature.round()}ºC'),
         
         ],
